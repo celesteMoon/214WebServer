@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>石头剪刀布</title>
+{% endblock %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/gameview_display.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/choices_display.css' %}">
+{% endblock %}
+
+{% block body %}
+    <h1>在线石头剪刀布</h1>
+    <p id="status">状态：等待匹配...</p>
+
+    <div class="view_div">
+        <div class="emoji_box">
+            <span id="emoji_left">❔</span>
+        </div>
+        <div class="view_gap">
+            <span id="score" style="width: 15vw;"></span>
+            <span id="vs" style="width: 15vw;">🆚</span>
+            <span id="timer" style="width: 15vw;"></span>
+        </div>
+        <div class="emoji_box">
+            <span id="emoji_right">❔</span>
+        </div>
+    </div>
+    <br>
+    <div id="choices_div">
+        <div class="choice_box">
+            <span onclick="makeChoice('rock')">🪨</span>
+        </div>
+        <div class="choice_gap"></div>
+        <div class="choice_box">
+            <span onclick="makeChoice('scissors')">✂️</span>
+        </div>
+        <div class="choice_gap"></div>
+        <div class="choice_box">
+            <span onclick="makeChoice('paper')">📃</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block src %}
+    {% load static %}
+    <script src="{% static 'rps/js/rps.js' %}"></script>
+{% endblock %}
