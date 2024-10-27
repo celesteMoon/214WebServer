@@ -13,20 +13,23 @@
 
 {% block body %}
     <h1>在线石头剪刀布</h1>
-
-    <input id="gameid-input" type="text" size="100">
+    <p>很难想象现在的人们上网就为了玩石头剪刀布</p>
+    <p>游戏规则: 赢了积1分, 平局或输了不得分, 先到3分者胜</p>
+    <p>你可以输入房间名(只能包含a-z, A-z, 0-9)来加入游戏, 如果房间内没有其他等候的玩家, 那么下一个访问这个房间的玩家将会成为你的对手!</p>
+    <input id="gameid-input" type="text" placeholder="输入房间名">
     <input id="gameid-submit" type="button" value="Enter">
  
     <script>
         document.querySelector('#gameid-input').focus();
-        document.querySelector('#gameid-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#gameid-submit').click();
-            }
-        };
-
+        
         document.querySelector('#gameid-submit').onclick = function(e) {
+            var regEx = /^[a-zA-Z0-9]+$/
             var gameId = document.querySelector('#gameid-input').value;
+            if (!regEx.test(gameId))
+            {
+                alert('房间名不合法 (包含了一些奇怪的字符)');
+                return ;
+            }
             window.location.pathname = '/rps/game/' + gameId + '/';
         };
     </script>

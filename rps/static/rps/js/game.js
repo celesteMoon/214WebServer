@@ -4,6 +4,7 @@ const timerElement = document.getElementById('timer');
 const scoreElement = document.getElementById('score');
 const selfChoiceElement = document.getElementById('emoji_left');
 const oppenentChoiceElement = document.getElementById('emoji_right');
+const opponentNameElement = document.getElementById('name_right');
 let gameId = JSON.parse(document.getElementById('game-id').textContent);
 console.log('gameId: ' + gameId.toString())
 
@@ -16,7 +17,7 @@ socket.onmessage = function(event) {
         statusElement.textContent = '状态：' + data.status;
     }
     else if (data.status === 'game_start') {
-        statusElement.textContent = '你的对手: ' + data.opponent_name;
+        opponentNameElement.textContent = data.opponent_name;
         gameId = data.game_id.toString();
         console.log("gameid: "+gameId);
     }

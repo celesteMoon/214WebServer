@@ -6,6 +6,7 @@
 
 {% block body %}
     <h1>注册</h1>
+    <p>理论上可以注册无限个小号, 但是请不要这么做</p>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

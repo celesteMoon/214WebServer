@@ -14,13 +14,12 @@
 
     <body onresize="resizeChatHistory()" onload="resizeChatHistory()">
         <h1>聊天室</h1>
-
+        <p>目前没有消息存档功能, 只能在线接收, 刷新页面消息会清空</p>
         <div>
             <div id="online-users" style="margin: 0; padding: 0; overflow: hidden;"></div>
         </div>
 
         <div id="chat-log" style="height: 600px; overflow-y: auto;">
-            <h4>目前没有消息存档功能, 只能在线接收, 刷新页面消息会清空</h4>
             {% for message in messages %}
                 <p><strong>{{ message.username }}</strong>: {{ message.content }}</p>
             {% endfor %}
@@ -31,7 +30,7 @@
         <form id="chat-form">
             {% csrf_token %}
             <input type="text" id="username" value="{{ request.user.username }}" readonly style="display: none;">
-            <textarea id="message-input" placeholder="输入你的消息"></textarea>
+            <textarea id="message-input" placeholder="输入消息"></textarea>
             <button id="message-submit" type="submit">发送</button>
         </form>
         <form id="countdown-form">

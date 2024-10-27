@@ -1,5 +1,17 @@
+.player_box {
+    display: flex;
+    flex-direction: column;
+}
+
+.names {
+    text-align: center;
+    font-size: 3vw;
+    font-family:'Comic Sans MS', cursive, sans-serif
+}
+
 .view_div {
     margin: auto; display: flex; justify-content: center;
+    user-select: none;
 }
 
 .emoji_box {
