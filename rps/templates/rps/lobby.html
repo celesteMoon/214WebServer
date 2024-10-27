@@ -25,11 +25,10 @@
         document.querySelector('#gameid-submit').onclick = function(e) {
             var regEx = /^[a-zA-Z0-9]+$/
             var gameId = document.querySelector('#gameid-input').value;
-            if (!regEx.test(gameId))
-            {
-                alert('房间名不合法 (包含了一些奇怪的字符)');
-                return ;
-            }
+            if (gameId == '') {alert('房间名不能为空'); return ;}
+            if (gameId == '214') {alert('房间名不能为214'); return ;} // easter egg += 1
+            if (gameId.length > 50) {alert('房间名不能包含大于50个字符'); return ;}
+            if (!regEx.test(gameId)) {alert('房间名不合法 (包含了一些奇怪的字符)'); return ;}
             window.location.pathname = '/rps/game/' + gameId + '/';
         };
     </script>
