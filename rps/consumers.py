@@ -17,7 +17,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
         self.game_id_name = 'chat_%s' % self.game_id
 
         # 将当前频道加入频道组
-        async_to_sync(self.channel_layer.group_add)(
+        await self.channel_layer.group_add(
             self.game_id_name,
             self.channel_name
         )
