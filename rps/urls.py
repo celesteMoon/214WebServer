@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import rps_view
+from .views import game_view, lobby_view
 
 urlpatterns = [
-    path('', rps_view, name='rps'),
+    path('', lobby_view, name='lobby'),
+    path('game/', game_view, name='rps'),
 ]

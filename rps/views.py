@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 @login_required
-def rps_view(request):
-    if request.method == 'POST':
-        pass
-    return render(request, 'rps/rps.html')
+def game_view(request):
+    return render(request, 'rps/game.html')
+
+@login_required
+def lobby_view(request):
+    return render(request, 'rps/lobby.html')
