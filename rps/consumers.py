@@ -12,15 +12,43 @@ class RPSConsumer(AsyncWebsocketConsumer):
     waiting_players = []  # 等待匹配的玩家
     games = {}  # 正在进行的游戏
     
+    async def status_game_start(self, p1, p2, game_id):
+        await p1.send(text_data=json.dumps({
+            'status': 'game_start',
+            'self_name': p1.username,
+            'self_score': RPSConsumer.games[game_id]['scores'][p1.username],
+            'opponent_name': p2.username,
+            'opponent_score': RPSConsumer.games[game_id]['scores'][p2.username],
+            'game_id': game_id
+        }))
+        await p2.send(text_data=json.dumps({
+            'status': 'game_start',
+            'self_name': p2.username,
+            'self_score': RPSConsumer.games[game_id]['scores'][p2.username],
+            'opponent_name': p1.username,
+            'opponent_score': RPSConsumer.games[game_id]['scores'][p1.username],
+            'game_id': game_id
+        }))
+
+    async def status_round_start(self, p1, p2, game_id):
+        await p1.send(text_data=json.dumps({
+            'status': 'round_start',
+            'self_name': p1.username,
+            'self_score': RPSConsumer.games[game_id]['scores'][p1.username],
+            'opponent_name': p2.username,
+            'opponent_score': RPSConsumer.games[game_id]['scores'][p2.username],
+            'game_id': game_id
+        }))
+        await p2.send(text_data=json.dumps({
+            'status': 'round_start',
+            'self_name': p2.username,
+            'self_score': RPSConsumer.games[game_id]['scores'][p2.username],
+            'opponent_name': p1.username,
+            'opponent_score': RPSConsumer.games[game_id]['scores'][p1.username],
+            'game_id': game_id
+        }))
+
     async def connect(self):
-        # functions inside function
-        async def ready():
-            pass
-
-        async def round_start():
-            pass
-
-        # main
         self.username = self.scope["user"].username
         await self.accept()
         
@@ -34,50 +62,17 @@ class RPSConsumer(AsyncWebsocketConsumer):
             # 匹配到另一个等待的玩家
             opponent = RPSConsumer.waiting_players.pop(0)
             game_id = str(uuid.uuid4())  # 创建唯一的游戏 ID
-            # game_id = 'truckduckpluck'  # 创建唯一的游戏 ID
-
-            RPSConsumer.games[game_id] = {
-                'players': [self, opponent],
-                'choices': {},
-                'scores': [0, 0],
-            }
 
             # 保存游戏状态
             async with games_lock:
                 RPSConsumer.games[game_id] = {
                     'players': [self, opponent],
                     'choices': {},
-                    'scores': [0, 0],
+                    'scores': {self.username: 0, opponent.username: 0},
                 }
-            
-            # 通知两个玩家游戏开始
-            await self.send(text_data=json.dumps({
-                'status': 'ready',
-                'self_name': self.username,
-                'opponent_name': opponent.username,
-                'game_id': game_id
-            }))
-            await opponent.send(text_data=json.dumps({
-                'status': 'ready',
-                'self_name': opponent.username,
-                'opponent_name': self.username,
-                'game_id': game_id
-            }))
 
-            await asyncio.sleep(3) # wait 3 seconds to start the game
-
-            await self.send(text_data=json.dumps({
-                'status': 'round_start',
-                'self_name': self.username,
-                'opponent_name': opponent.username,
-                'game_id': game_id
-            }))
-            await opponent.send(text_data=json.dumps({
-                'status': 'round_start',
-                'self_name': opponent.username,
-                'opponent_name': self.username,
-                'game_id': game_id
-            }))
+            await self.status_game_start(self, opponent, game_id)
+            await self.status_round_start(self, opponent, game_id)
 
         
     async def receive(self, text_data):
@@ -87,7 +82,6 @@ class RPSConsumer(AsyncWebsocketConsumer):
         game = RPSConsumer.games[game_id]
 
         if status == 'choice':
-            logger.info("gameid: "+str(game_id))
             choice = data.get('choice')
             game['choices'][self.username] = choice
         
@@ -96,22 +90,15 @@ class RPSConsumer(AsyncWebsocketConsumer):
             # game = RPSConsumer.games[game_id]
             # game['choices'][self.username] = choice
 
-        await asyncio.sleep(5) # wait 5 seconds to see the results for this round
-        if True:
-        # if len(game['choices']) == 2:
-            
+        # await asyncio.sleep(5) # wait 5 seconds to see the results for this round
 
-            # calc results for this round
-
-
+        # if True:
+        if len(game['choices']) == 2:
             # async with games_lock:
             #     game = RPSConsumer.games[game_id]
 
-
             # 获取双方的选择
             player1, player2 = game['players']
-            choice1 = 'rock'
-            choice2 = 'paper'
             # async with games_lock:
             if game['choices'][player1.username] is None:
                 choice1 = 'fuck'
@@ -121,35 +108,38 @@ class RPSConsumer(AsyncWebsocketConsumer):
                 choice2 = 'fuck'
             else:
                 choice2 = game['choices'][player2.username]
-            
-            # scores
-            self_score, opponent_score = game['scores']
 
             # 判断结果
             result = self.judge_winner(player1.username, choice1, player2.username, choice2)
-            
+            if result[player1.username] == 'win':
+                RPSConsumer.games[game_id]['scores'][player1.username] += 1
+            if result[player2.username] == 'win':
+                RPSConsumer.games[game_id]['scores'][player2.username] += 1
             # 通知双方结果
             async with games_lock:
                 await player1.send(text_data=json.dumps({
                     'status': 'round_end',
                     'your_choice': choice1,
-                    # 'self_score': RPSConsumer.games[game_id]['scores'][0],
+                    'self_score': RPSConsumer.games[game_id]['scores'][player1.username],
                     'opponent_choice': choice2,
-                    # 'opponent_score': RPSConsumer.games[game_id]['scores'][1],
+                    'opponent_score': RPSConsumer.games[game_id]['scores'][player2.username],
                     'result': result[player1.username]
                 }))
                 await player2.send(text_data=json.dumps({
                     'status': 'round_end',
                     'your_choice': choice2,
-                    # 'self_score': RPSConsumer.games[game_id]['scores'][1],
+                    'self_score': RPSConsumer.games[game_id]['scores'][player2.username],
                     'opponent_choice': choice1,
-                    # 'opponent_score': RPSConsumer.games[game_id]['scores'][0],
+                    'opponent_score': RPSConsumer.games[game_id]['scores'][player1.username],
                     'result': result[player2.username]
                 }))
             
-            # 删除游戏记录
-            del RPSConsumer.games[game_id]
-            # break
+            if max(RPSConsumer.games[game_id]['scores'][player1.username], RPSConsumer.games[game_id]['scores'][player2.username]) == 3:
+                # 删除游戏记录
+                del RPSConsumer.games[game_id]
+            else:
+                game['choices'] = {}
+                await self.status_round_start(player1, player2, game_id)
 
     def judge_winner(self, player1, choice1, player2, choice2):
         outcomes = {

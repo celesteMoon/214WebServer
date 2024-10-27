@@ -43,11 +43,21 @@ document.getElementById('chat-form').onsubmit = function(e) {
     if (message == '') return ;
     const username = document.getElementById('username').value;
     chatSocket.send(JSON.stringify({
+        'type': 'msg',
         'message': message,
         'username': username
     }));
     messageInputDom.value = '';
     toBottomFlag = true;
+};
+
+document.getElementById('cd_button').onclick = function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    chatSocket.send(JSON.stringify({
+        'type': 'countdown',
+        'username': username
+    }));
 };
 
 function updateOnlineUserList(users) {

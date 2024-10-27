@@ -1,7 +1,10 @@
+import asyncio
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.utils import timezone
 from django.template.defaultfilters import date
+
+import threading
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
@@ -17,9 +20,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # upd user list
         self.username = self.scope["user"].username
         ChatConsumer.online_users.add(self.username)
-        
-        # 通知其他用户更新在线用户名单
-        await self.update_user_list()
+        await self.update_user_list() # 通知其他用户更新在线用户名单
 
     async def disconnect(self, close_code):
         # 从组中移除 WebSocket 连接
@@ -27,25 +28,68 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # upd user list
         ChatConsumer.online_users.remove(self.username)
-        
-        # 通知其他用户更新在线用户名单
-        await self.update_user_list()
+        await self.update_user_list() # 通知其他用户更新在线用户名单
 
     # 接收来自 WebSocket 的消息
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        data_type = text_data_json['type']
+        if data_type == 'msg':
+            await self.receive_msg(text_data_json)
+        elif data_type == 'countdown':
+            await self.receive_countdown(text_data_json)
+            # asyncio.run(self.receive_countdown(text_data_json))
+
+
+    async def receive_msg(self, text_data_json):
         message = text_data_json['message']
         username = text_data_json['username']
         time_short = date(timezone.localtime(timezone.now()), "H:i")
         time_local = date(timezone.localtime(timezone.now()), "Y M jS H:i:s O")
         time_UTC = date(timezone.now(), "Y M jS H:i:s O")
 
-        # 向组广播消息
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
                 'message': message,
+                'username': username,
+                'time_short': time_short,
+                'time_local': time_local,
+                'time_UTC': time_UTC
+            }
+        )
+
+    # the server can only process one countdown for one user at a time
+    # and it blocks any incoming message in the countdown for the user who called the countdown
+    async def receive_countdown(self, text_data_json):
+        username = text_data_json['username']
+        time_short = date(timezone.localtime(timezone.now()), "H:i")
+        time_local = date(timezone.localtime(timezone.now()), "Y M jS H:i:s O")
+        time_UTC = date(timezone.now(), "Y M jS H:i:s O")
+
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': 'this is a countdown!',
+                'username': username,
+                'time_short': time_short,
+                'time_local': time_local,
+                'time_UTC': time_UTC
+            }
+        )
+
+        await asyncio.sleep(3)
+
+        time_short = date(timezone.localtime(timezone.now()), "H:i")
+        time_local = date(timezone.localtime(timezone.now()), "Y M jS H:i:s O")
+        time_UTC = date(timezone.now(), "Y M jS H:i:s O")
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': 'the countdown ends!',
                 'username': username,
                 'time_short': time_short,
                 'time_local': time_local,
@@ -86,4 +130,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'user_list',
             'users': user_list
+        }))
+
+    # countdown test
+    async def countdown(self, event):
+        message = event['message']
+        username = event['username']
+        time_short = event['time_short']
+        time_local = event['time_local']
+        time_UTC = event['time_UTC']
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'username': username,
+            'time_short': time_short,
+            'time_local': time_local,
+            'time_UTC': time_UTC
         }))

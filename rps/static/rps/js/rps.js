@@ -14,33 +14,15 @@ socket.onmessage = function(event) {
     if (data.status === 'waiting') {
         statusElement.textContent = '状态：' + data.status;
     }
-    else if (data.status === 'ready') {
+    else if (data.status === 'game_start') {
         statusElement.textContent = '你的对手: ' + data.opponent_name;
         gameId = data.game_id.toString();
         console.log("gameid: "+gameId);
-        
-        socket.send(JSON.stringify({
-            'status': 'response',
-            'game_id': gameId
-        }));
-
-        let countdown = 3;
-        function updTimer() {
-            timerElement.textContent = `${countdown}`;
-            countdown -= 1;
-            if (countdown < 0) {
-                clearInterval(interval); // 停止倒计时
-                timerElement.textContent = "";
-            }
-            return updTimer;
-        }
-        const interval = setInterval(updTimer(), 1000); // 每秒更新一次
     }
     else if (data.status === 'round_start') {
-        choicesElement.style.display = 'flex'; // 显示选项
-        scoreElement.textContent = data.self_score + ':' + data.opponent_score;
-
-        let countdown = 5;
+        oppenentChoiceElement.textContent = "❔";
+        selfChoiceElement.textContent = "❔";
+        var countdown = 3;
         function updTimer() {
             timerElement.textContent = `${countdown}`;
             countdown -= 1;
@@ -50,7 +32,12 @@ socket.onmessage = function(event) {
             }
             return updTimer;
         }
-        const interval = setInterval(updTimer(), 1000); // 每秒更新一次
+        var interval = setInterval(updTimer(), 1000); // 每秒更新一次
+
+        var timeout = setTimeout(function(){
+            choicesElement.style.display = 'flex'; // 显示选项
+            scoreElement.textContent = data.self_score + ':' + data.opponent_score;
+        }, 3000);
     }
     else if (data.status === 'round_end') {
         if (data.opponent_choice == "rock") oppenentChoiceElement.textContent = "🪨";
@@ -67,7 +54,7 @@ socket.onmessage = function(event) {
             if (countdown < 0) {
                 clearInterval(interval); // 停止倒计时
                 timerElement.textContent = "";
-                window.location.reload(); // 刷新页面
+                // window.location.reload(); // 刷新页面
             }
             return updTimer;
         }

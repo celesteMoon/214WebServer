@@ -8,6 +8,7 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'rps/css/gameview_display.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'rps/css/choices_display.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/names_display.css' %}">
 {% endblock %}
 
 {% block body %}
@@ -27,6 +28,17 @@
             <span id="emoji_right">❔</span>
         </div>
     </div>
+    <div class="names_div">
+        <div class="name_box">
+            <span id="name_left">{{ request.user.username }}</span>
+        </div>
+        <div class="name_gap">
+            
+        </div>
+        <div class="name_box">
+            <span id="name_left">{{ request.user.username }}</span>
+        </div>
+    </div>
     <br>
     <div id="choices_div">
         <div class="choice_box">
@@ -41,6 +53,7 @@
             <span onclick="makeChoice('paper')">📃</span>
         </div>
     </div>
+
 {% endblock %}
 
 {% block src %}
