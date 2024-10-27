@@ -3,5 +3,5 @@ from .views import game_view, lobby_view
 
 urlpatterns = [
     path('', lobby_view, name='lobby'),
-    path('game/', game_view, name='rps'),
+    path('game/<str:game_id>/', game_view, name='game'),
 ]

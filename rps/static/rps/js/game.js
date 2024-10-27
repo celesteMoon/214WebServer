@@ -4,9 +4,10 @@ const timerElement = document.getElementById('timer');
 const scoreElement = document.getElementById('score');
 const selfChoiceElement = document.getElementById('emoji_left');
 const oppenentChoiceElement = document.getElementById('emoji_right');
-let gameId;
+let gameId = JSON.parse(document.getElementById('game-id').textContent);
+console.log('gameId: ' + gameId.toString())
 
-const socket = new WebSocket('ws://' + window.location.host + '/ws/game/');
+const socket = new WebSocket('ws://' + window.location.host + '/ws/game/' + gameId + '/');
 
 socket.onmessage = function(event) {
     const data = JSON.parse(event.data);

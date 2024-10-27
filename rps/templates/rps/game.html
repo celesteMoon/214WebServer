@@ -53,6 +53,10 @@
             <span onclick="makeChoice('paper')">📃</span>
         </div>
     </div>
+    <br>
+    <div id="gameid_div">
+        {{ game_id|json_script:"game-id" }}
+    </div>
 
 {% endblock %}
 

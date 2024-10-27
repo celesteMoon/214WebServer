@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>石头剪刀布</title>
+{% endblock %}
+
+{% block head %}
+    <!-- {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/game_gameview_display.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/game_choices_display.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/game_names_display.css' %}"> -->
+{% endblock %}
+
+{% block body %}
+    <h1>在线石头剪刀布</h1>
+
+    <input id="gameid-input" type="text" size="100">
+     <input id="gameid-submit" type="button" value="Enter">
+ 
+     <script>
+         document.querySelector('#gameid-input').focus();
+         document.querySelector('#gameid-input').onkeyup = function(e) {
+             if (e.keyCode === 13) {  // enter, return
+                 document.querySelector('#gameid-submit').click();
+             }
+         };
+ 
+         document.querySelector('#gameid-submit').onclick = function(e) {
+             var gameId = document.querySelector('#gameid-input').value;
+             window.location.pathname = '/rps/game/' + gameId + '/';
+         };
+     </script>
+
+{% endblock %}
+
+{% block src %}
+    <!-- {% load static %}
+    <script src="{% static 'rps/js/game.js' %}"></script> -->
+{% endblock %}
