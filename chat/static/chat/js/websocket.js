@@ -19,14 +19,33 @@ chatSocket.onmessage = function(e) {
     // if (container.scrollTop + container.clientHeight == container.scrollHeight) toBottomFlag = true;
 
     const chatLog = document.getElementById('chat-log');
-    chatLog.innerHTML += '<p class="message">\n'
-    + '<span class="time-container">\n'
-    + '<small class="local-time">' + data.time_short + '</small>\n'
-    + '<span class="tooltip">\n'
-    + data.time_local + ' <br>\n'
-    + data.time_UTC + '\n'
-    + '</span>\n' + '</span>\n'
-    + data.username + ': ' + data.message + '</p>'
+    var HTMLdisplay = `
+    <p class="message" style="display: flex; flex-direction: row;">
+        <span class="time-container">
+            <small class="local-time"> ${data.time_short} </small>
+            <span class="tooltip">
+                ${data.time_local} <br>
+                ${data.time_UTC}
+            </span>
+        </span>
+        &nbsp;
+        <script type="text/template" style="display: block;">
+            ${data.username} : ${data.message}
+        </script>
+    </p>
+    `
+    chatLog.innerHTML += HTMLdisplay;
+    // chatLog.innerHTML += '<p class="message">\n'
+    // + '<span class="time-container">\n'
+    // + '<small class="local-time">' + data.time_short + '</small>\n'
+    // + '<span class="tooltip">\n'
+    // + data.time_local + ' <br>\n'
+    // + data.time_UTC + '\n'
+    // + '</span>\n' + '</span>\n'
+    // + '<pre>'
+    // + data.username + ': ' + data.message
+    // + '</pre>'
+    // + '</p>'
     
     updTimeTooltip();
     if (toBottomFlag) toBottom(), toBottomFlag = false;
@@ -39,8 +58,9 @@ chatSocket.onclose = function(e) {
 document.getElementById('chat-form').onsubmit = function(e) {
     e.preventDefault();
     const messageInputDom = document.getElementById('message-input');
-    const message = messageInputDom.value;
-    if (message == '') return ;
+    var message = messageInputDom.value;
+    message = message.replace('\n', ' ');
+    if (message.replace(' ', '') == '') return ;
     const username = document.getElementById('username').value;
     chatSocket.send(JSON.stringify({
         'type': 'msg',
@@ -51,14 +71,14 @@ document.getElementById('chat-form').onsubmit = function(e) {
     toBottomFlag = true;
 };
 
-document.getElementById('cd_button').onclick = function(e) {
-    e.preventDefault();
-    const username = document.getElementById('username').value;
-    chatSocket.send(JSON.stringify({
-        'type': 'countdown',
-        'username': username
-    }));
-};
+// document.getElementById('cd_button').onclick = function(e) {
+//     e.preventDefault();
+//     const username = document.getElementById('username').value;
+//     chatSocket.send(JSON.stringify({
+//         'type': 'countdown',
+//         'username': username
+//     }));
+// };
 
 function updateOnlineUserList(users) {
     const userListElement = document.getElementById('online-users');

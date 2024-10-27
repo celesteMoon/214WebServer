@@ -15,21 +15,21 @@
     <h1>在线石头剪刀布</h1>
 
     <input id="gameid-input" type="text" size="100">
-     <input id="gameid-submit" type="button" value="Enter">
+    <input id="gameid-submit" type="button" value="Enter">
  
-     <script>
-         document.querySelector('#gameid-input').focus();
-         document.querySelector('#gameid-input').onkeyup = function(e) {
-             if (e.keyCode === 13) {  // enter, return
-                 document.querySelector('#gameid-submit').click();
-             }
-         };
- 
-         document.querySelector('#gameid-submit').onclick = function(e) {
-             var gameId = document.querySelector('#gameid-input').value;
-             window.location.pathname = '/rps/game/' + gameId + '/';
-         };
-     </script>
+    <script>
+        document.querySelector('#gameid-input').focus();
+        document.querySelector('#gameid-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#gameid-submit').click();
+            }
+        };
+
+        document.querySelector('#gameid-submit').onclick = function(e) {
+            var gameId = document.querySelector('#gameid-input').value;
+            window.location.pathname = '/rps/game/' + gameId + '/';
+        };
+    </script>
 
 {% endblock %}
 

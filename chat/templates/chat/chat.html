@@ -20,7 +20,7 @@
         </div>
 
         <div id="chat-log" style="height: 600px; overflow-y: auto;">
-            <h2>消息记录</h2>
+            <h4>目前没有消息存档功能, 只能在线接收, 刷新页面消息会清空</h4>
             {% for message in messages %}
                 <p><strong>{{ message.username }}</strong>: {{ message.content }}</p>
             {% endfor %}
@@ -32,7 +32,7 @@
             {% csrf_token %}
             <input type="text" id="username" value="{{ request.user.username }}" readonly style="display: none;">
             <textarea id="message-input" placeholder="输入你的消息"></textarea>
-            <button type="submit">发送</button>
+            <button id="message-submit" type="submit">发送</button>
         </form>
         <form id="countdown-form">
             {% csrf_token %}

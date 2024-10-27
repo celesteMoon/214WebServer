@@ -12,6 +12,8 @@
     white-space: nowrap;
     pointer-events: none;
     z-index: 100;
+
+    font-family: 'Comic Sans MS', cursive, sans-serif;
 }
 .time-container {
     position: relative;

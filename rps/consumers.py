@@ -61,14 +61,6 @@ class RPSConsumer(AsyncWebsocketConsumer):
             choice = data.get('choice')
             game['choices'][self.username] = choice
         
-        # 保存玩家选择
-        # async with games_lock:
-            # game = RPSConsumer.games[game_id]
-            # game['choices'][self.username] = choice
-
-        # await asyncio.sleep(5) # wait 5 seconds to see the results for this round
-
-        # if True:
         if len(game['choices']) == 2:
             # async with games_lock:
             #     game = RPSConsumer.games[game_id]
