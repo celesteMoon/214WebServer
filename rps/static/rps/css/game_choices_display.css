@@ -1,6 +1,7 @@
 #choices_div {
     margin: auto; justify-content: center;
-    display:none;
+    display: none;
+    user-select: none;
 }
 
 .choice_box {

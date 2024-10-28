@@ -61,10 +61,12 @@ class RPSConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         if self.game_id in RPSConsumer.games:
-            if self in RPSConsumer.games[self.game_id]['spectators']:
-                RPSConsumer.games[self.game_id]['spectators'].remove(self)
-            if self in RPSConsumer.games[self.game_id]['players']:
-                del RPSConsumer.games[self.game_id]
+            if 'spectators' in RPSConsumer.games[self.game_id]:
+                if self in RPSConsumer.games[self.game_id]['spectators']:
+                    RPSConsumer.games[self.game_id]['spectators'].remove(self)
+            if 'players' in RPSConsumer.games[self.game_id]:
+                if self in RPSConsumer.games[self.game_id]['players']:
+                    del RPSConsumer.games[self.game_id]
         await self.channel_layer.group_discard(
             self.game_id_name,
             self.channel_name
@@ -98,6 +100,15 @@ class RPSConsumer(AsyncWebsocketConsumer):
                 RPSConsumer.games[game_id]['scores'][player1.username] += 1
             if result[player2.username] == 'win':
                 RPSConsumer.games[game_id]['scores'][player2.username] += 1
+
+            if RPSConsumer.games[game_id]['scores'][player1.username] == 3:
+                logger.info(player1.username + ' wins')
+                player1.scope["user"].stats_rps_win += 1
+                player2.scope["user"].stats_rps_lose += 1
+            if RPSConsumer.games[game_id]['scores'][player2.username] == 3:
+                logger.info(player2.username + ' wins')
+                player1.scope["user"].stats_rps_lose += 1
+                player2.scope["user"].stats_rps_win += 1
             # 通知双方结果
             await player1.send(text_data=json.dumps({
                 'status': 'round_end',
@@ -124,11 +135,17 @@ class RPSConsumer(AsyncWebsocketConsumer):
                 'p2_name': player2.username,
                 'p2_choice': choice2,
                 'p2_score': RPSConsumer.games[self.game_id]['scores'][player2.username],
-                'game_id': self.game_id
+                'game_id': self.game_id,
+                'p1_win': player1.scope["user"].stats_rps_win,
+                'p1_lose': player1.scope["user"].stats_rps_lose,
+                'p2_win': player2.scope["user"].stats_rps_win,
+                'p2_lose': player2.scope["user"].stats_rps_lose,
             }))
             
             if max(RPSConsumer.games[game_id]['scores'][player1.username], RPSConsumer.games[game_id]['scores'][player2.username]) == 3:
-                del RPSConsumer.games[game_id] # game ends
+                logger.info(player1.username + str(player1.scope["user"].stats_rps_win) + '/' + str(player1.scope["user"].stats_rps_lose))
+                logger.info(player2.username + str(player2.scope["user"].stats_rps_win) + '/' + str(player2.scope["user"].stats_rps_lose))
+                del RPSConsumer.games[game_id]
             else:
                 game['choices'] = {}
                 await self.status_round_start(player1, player2, game_id)

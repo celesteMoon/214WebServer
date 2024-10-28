@@ -12,5 +12,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         max_length=20,
         unique=True,
-        validators=[username_validator],  # 添加验证器
+        validators=[username_validator] # 添加验证器
     )
+    stats_rps_win = models.IntegerField(default=0)
+    stats_rps_lose = models.IntegerField(default=0)
