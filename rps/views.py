@@ -10,5 +10,4 @@ def game_view(request, game_id):
 
 @login_required
 def lobby_view(request):
-    user = request.user
-    return render(request, 'rps/lobby.html', {'user': user})
+    return render(request, 'rps/lobby.html')

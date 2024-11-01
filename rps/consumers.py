@@ -1,10 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import async_to_sync
-import json, asyncio, logging, uuid
+import json, logging
 
 logger = logging.getLogger('django')
-
-games_lock = asyncio.Lock() # lock
 
 class RPSConsumer(AsyncWebsocketConsumer):
     games = {}  # 正在进行的游戏
