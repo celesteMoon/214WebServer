@@ -1,0 +1,17 @@
+.username {
+    font-size: 4vw;
+    font-family:'Comic Sans MS', cursive, sans-serif
+}
+
+.stats_box {
+    margin: 1vw;
+    /* background-color: lightsteelblue; */
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    /* border-radius: 5vw; */
+}
+
+.stats_box p {
+    color: black;
+}

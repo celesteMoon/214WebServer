@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>用户主页</title>
+{% endblock %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+{% block body %}
+    <p class="username"> {{ request.user.username }} </p>
+    <div class="stats_box" id="stats_basic">
+        <p id="join_date"></p>
+    </div>
+    <div class="stats_box" id="stats_rps">
+        <p id="rps_win_lose"></p>
+    </div>
+
+    <div id="username_div" style="display: none;">
+        {{ username|json_script:"username" }}
+    </div>
+{% endblock %}
+
+{% block src %}
+    {% load static %}
+    <script src="{% static 'accounts/js/profile.js' %}"></script>
+{% endblock %}

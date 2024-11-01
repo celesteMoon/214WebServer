@@ -1,7 +1,9 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json, logging
 
-logger = logging.getLogger('django')
+from channels.db import database_sync_to_async
+
+logger = logging.getLogger('rps/consumers.py')
 
 class RPSConsumer(AsyncWebsocketConsumer):
     games = {}  # 正在进行的游戏
@@ -102,10 +104,12 @@ class RPSConsumer(AsyncWebsocketConsumer):
                 logger.info(player1.username + ' wins')
                 player1.scope["user"].stats_rps_win += 1
                 player2.scope["user"].stats_rps_lose += 1
+                await self.db_save(player1, player2)
             if RPSConsumer.games[game_id]['scores'][player2.username] == 3:
                 logger.info(player2.username + ' wins')
                 player1.scope["user"].stats_rps_lose += 1
                 player2.scope["user"].stats_rps_win += 1
+                await self.db_save(player1, player2)
             # 通知双方结果
             await player1.send(text_data=json.dumps({
                 'status': 'round_end',
@@ -195,6 +199,11 @@ class RPSConsumer(AsyncWebsocketConsumer):
 
     async def spectate_update(self, event):
         await self.send(text_data=event['text'])
+
+    @database_sync_to_async
+    def db_save(self, p1, p2):
+        p1.scope["user"].save()
+        p2.scope["user"].save()
 
     def judge_winner(self, player1, choice1, player2, choice2):
         outcomes = {
