@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>石头剪刀布</title>
+{% endblock %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/game_gameview_display.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/game_choices_display.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'rps/css/game_names_display.css' %}">
+{% endblock %}
+
+{% block body %}
+    <h1>在线石头剪刀布</h1>
+    <p id="status">状态：等待匹配...</p>
+
+    <div class="view_div">
+        <div class="player_box">
+            <div class="emoji_box">
+                <span id="emoji_left">❔</span>
+            </div>
+            <span class="names" id="name_left">{{ request.user.username }}</span>
+        </div>
+        <div class="view_gap">
+            <span id="score" style="width: 15vw;"></span>
+            <span id="vs" style="width: 15vw;">🆚</span>
+            <span id="timer" style="width: 15vw;"></span>
+        </div>
+        <div class="player_box">
+            <div class="emoji_box">
+                <span id="emoji_right">❔</span>
+            </div>
+            <span class="names" id="name_right"> ? </span>
+        </div>
+    </div>
+    <br>
+    <div id="choices_div">
+        <div class="choice_box" onclick="makeChoice('rock')">
+            <span>🪨</span>
+        </div>
+        <div class="choice_gap"></div>
+        <div class="choice_box" onclick="makeChoice('scissors')">
+            <span>✂️</span>
+        </div>
+        <div class="choice_gap"></div>
+        <div class="choice_box" onclick="makeChoice('paper')">
+            <span>📃</span>
+        </div>
+    </div>
+    <br>
+    <div id="gameid_div" style="display: none;">
+        {{ game_id|json_script:"game-id" }}
+    </div>
+
+{% endblock %}
+
+{% block src %}
+    {% load static %}
+    <script src="{% static 'rps/js/game.js' %}"></script>
+{% endblock %}
