@@ -18,7 +18,7 @@
     <p>你可以输入房间名(只能包含a-z, A-z, 0-9)来加入游戏, 如果房间内没有其他等候的玩家, 那么下一个访问这个房间的玩家将会成为你的对手!</p>
     <input id="gameid-input" type="text" placeholder="输入房间名">
     <input id="gameid-submit" type="button" value="Enter">
- 
+    <p>胜场数: {{ stats_rps_win }} </p>
     <script>
         document.querySelector('#gameid-input').focus();
         

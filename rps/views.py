@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+from accounts.models import CustomUser
 
 @login_required
 def game_view(request, game_id):
@@ -9,4 +10,5 @@ def game_view(request, game_id):
 
 @login_required
 def lobby_view(request):
-    return render(request, 'rps/lobby.html')
+    user = request.user
+    return render(request, 'rps/lobby.html', {'stats_rps_win': user.stats_rps_win})
