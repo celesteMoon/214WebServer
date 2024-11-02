@@ -1,3 +1,11 @@
+#status {
+    color: gray;
+    font-size: 2vmin;
+    text-align: center;
+    margin: 5px;
+}
+
+
 .player_box {
     display: flex;
     flex-direction: column;
@@ -5,8 +13,8 @@
 
 .names {
     text-align: center;
-    font-size: 3vw;
-    /* font-size: clamp(1vw, calc(2vw + 2px), 3vw); */
+    font-size: 3vmin;
+    /* font-size: clamp(1vmin, calc(2vmin + 2px), 3vmin); */
     font-family:'Comic Sans MS', cursive, sans-serif;
     text-decoration: none;
     color: black;
@@ -19,8 +27,8 @@
 
 .emoji_box {
     /* always a square */
-    width: 20vw;
-    padding-top: 20vw;
+    width: 20vmin;
+    padding-top: 20vmin;
     position: relative;
 
     display: flex;
@@ -31,7 +39,7 @@
     border-style: solid;
     border-width: 3px;
     border-color: lightgray;
-    border-radius: 5vw;
+    border-radius: 5vmin;
 
     text-align: center;
 }
@@ -41,12 +49,12 @@
     top: 50%; left: 50%;
     transform: translate(-50%, -50%); /* 使文本居中 */
 
-    font-size: 10vw
+    font-size: 10vmin
 }
 
 .view_gap {
-    width: 15vw;
-    max-height: 20vw;
+    width: 15vmin;
+    max-height: 20vmin;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -60,7 +68,7 @@
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
 
-    font-size: 5vw;
+    font-size: 5vmin;
 }
 
 .view_gap #timer {
@@ -68,7 +76,7 @@
     top: 80%; left: 50%;
     transform: translate(-50%, -50%);
 
-    font-size: 4vw;
+    font-size: 4vmin;
     font-family:'Comic Sans MS', cursive, sans-serif
 }
 
@@ -77,6 +85,6 @@
     top: 20%; left: 50%;
     transform: translate(-50%, -50%);
 
-    font-size: 4vw;
+    font-size: 4vmin;
     font-family:'Comic Sans MS', cursive, sans-serif
 }

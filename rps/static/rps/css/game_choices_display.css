@@ -6,8 +6,8 @@
 
 .choice_box {
     /* always a square */
-    width: 10vw;
-    padding-top: 10vw;
+    width: 10vmin;
+    padding-top: 10vmin;
     position: relative;
 
     display: flex;
@@ -18,7 +18,7 @@
     border-style: solid;
     border-width: 3px;
     border-color: lightgray;
-    border-radius: 2vw;
+    border-radius: 2vmin;
 
     text-align: center;
 }
@@ -31,12 +31,11 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%); /* 使文本居中 */
-
-    font-size: 6vw
+    font-size: 6vmin
 }
 
 .choice_gap {
-    width: 1vw;
+    width: 1vmin;
     position: relative;
     display: flex;
     justify-content: center;
@@ -49,5 +48,5 @@
     top: 50%; left: 50%;
     transform: translate(-50%, -50%); /* 使文本居中 */
 
-    font-size: 4vw;
+    font-size: 4vmin;
 }

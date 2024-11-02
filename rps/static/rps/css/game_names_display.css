@@ -1,4 +1,4 @@
-.names_div {
+/* .names_div {
     margin: auto; display: flex; justify-content: center;
 }
 
@@ -16,7 +16,7 @@
 .name_box span {
     position: absolute;
     top: 50%; left: 50%;
-    transform: translate(-50%, -50%); /* 使文本居中 */
+    transform: translate(-50%, -50%);
 
     font-size: 3vw
 }
@@ -30,4 +30,4 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-}
+} */

@@ -19,7 +19,7 @@ socket.onmessage = function(event)
     console.log(data);
     if (data.status === "waiting")
     {
-        statusElement.textContent = "状态：" + data.status;
+        //statusElement.textContent = "状态：" + data.status;
     }
     else if (data.status === "game_start")
     {
@@ -46,19 +46,30 @@ socket.onmessage = function(event)
         else if (data.opponent_choice == "scissors") opponentChoiceElement.textContent = "✂️";
         else if (data.opponent_choice == "paper") opponentChoiceElement.textContent = "📃";
         scoreElement.textContent = data.self_score + ":" + data.opponent_score;
-        statusElement.textContent = "你的选择：" + data.your_choice + "，对手选择：" + data.opponent_choice + "，结果：" + data.result;
+        //statusElement.textContent += "你的选择：" + data.your_choice + "，对手选择：" + data.opponent_choice + "，结果：" + data.result;
         choicesElement.style.display = "none"; // 隐藏选项
 
         if (Math.max(data.self_score, data.opponent_score) == 3)
         {
-            if (data.self_score == 3) selfNameElement.textContent += "👑";
-            if (data.opponent_score == 3) opponentNameElement.textContent += "👑";
+            if (data.self_score == 3)
+            {
+                statusElement.textContent = `恭喜${selfNameElement.textContent}获得胜利!`;
+                statusElement.style.display = "block";
+                selfNameElement.textContent += "👑";
+            }
+            if (data.opponent_score == 3)
+            {
+                statusElement.textContent = `恭喜${opponentNameElement.textContent}获得胜利!`;
+                statusElement.style.display = "block";
+                opponentNameElement.textContent += "👑";
+            }
         }
     }
     else if (data.status === "spectate_start")
     {
         if (isPlayer) return ;
         statusElement.textContent = "这里满员了, 你现在是旁观者模式!";
+        statusElement.style.display = "block";
         selfNameElement.textContent = data.p1_name;
         selfNameElement.href = '/profile/' + selfNameElement.textContent;
         opponentNameElement.textContent = data.p2_name;
@@ -83,8 +94,18 @@ socket.onmessage = function(event)
 
         if (Math.max(data.p1_score, data.p2_score) == 3)
         {
-            if (data.p1_score == 3) selfNameElement.textContent += "👑";
-            if (data.p2_score == 3) opponentNameElement.textContent += "👑";
+            if (data.p1_score == 3)
+            {
+                statusElement.textContent = `恭喜${selfNameElement.textContent}获得胜利!`;
+                statusElement.style.display = "block";
+                selfNameElement.textContent += "👑";
+            }
+            if (data.p2_score == 3)
+            {
+                statusElement.textContent = `恭喜${opponentNameElement.textContent}获得胜利!`;
+                statusElement.style.display = "block";
+                opponentNameElement.textContent += "👑";
+            }
         }
         else
         {

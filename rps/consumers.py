@@ -101,12 +101,12 @@ class RPSConsumer(AsyncWebsocketConsumer):
                 RPSConsumer.games[game_id]['scores'][player2.username] += 1
 
             if RPSConsumer.games[game_id]['scores'][player1.username] == 3:
-                logger.info(player1.username + ' wins')
+                # logger.info(player1.username + ' wins')
                 player1.scope["user"].stats_rps_win += 1
                 player2.scope["user"].stats_rps_lose += 1
                 await self.db_save(player1, player2)
             if RPSConsumer.games[game_id]['scores'][player2.username] == 3:
-                logger.info(player2.username + ' wins')
+                # logger.info(player2.username + ' wins')
                 player1.scope["user"].stats_rps_lose += 1
                 player2.scope["user"].stats_rps_win += 1
                 await self.db_save(player1, player2)
@@ -144,8 +144,8 @@ class RPSConsumer(AsyncWebsocketConsumer):
             }))
             
             if max(RPSConsumer.games[game_id]['scores'][player1.username], RPSConsumer.games[game_id]['scores'][player2.username]) == 3:
-                logger.info(player1.username + str(player1.scope["user"].stats_rps_win) + '/' + str(player1.scope["user"].stats_rps_lose))
-                logger.info(player2.username + str(player2.scope["user"].stats_rps_win) + '/' + str(player2.scope["user"].stats_rps_lose))
+                # logger.info(player1.username + str(player1.scope["user"].stats_rps_win) + '/' + str(player1.scope["user"].stats_rps_lose))
+                # logger.info(player2.username + str(player2.scope["user"].stats_rps_win) + '/' + str(player2.scope["user"].stats_rps_lose))
                 del RPSConsumer.games[game_id]
             else:
                 game['choices'] = {}
