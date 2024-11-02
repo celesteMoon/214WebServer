@@ -8,7 +8,7 @@ sys.path.append(base_dir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "214web.settings")
 django.setup()
 
-from .models import CustomUser
+from accounts.models import CustomUser
 from django.utils import timezone
 from django.template.defaultfilters import date
 

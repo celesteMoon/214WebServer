@@ -16,3 +16,5 @@ class CustomUser(AbstractUser):
     )
     stats_rps_win = models.IntegerField(default=0)
     stats_rps_lose = models.IntegerField(default=0)
+    # stats_rps_winstreak = models.IntegerField(default=0)
+    # stats_rps_maxwinstreak = models.IntegerField(default=0)

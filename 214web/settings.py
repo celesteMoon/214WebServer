@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'chat', 
     'accounts',
     'channels',
-    'rps'
+    'rps',
+    'user_profile'
 ]
 
 ASGI_APPLICATION = '214web.asgi.application'

@@ -24,5 +24,6 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     path('accounts/', include('accounts.urls')),
     path('rps/', include('rps.urls')),
+    path('profile/', include('user_profile.urls')),
     # path('favicon.ico', serve, {'path': 'staticfiles/214logo.ico'}),
 ]
