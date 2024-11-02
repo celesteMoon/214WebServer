@@ -6,7 +6,10 @@
 .names {
     text-align: center;
     font-size: 3vw;
-    font-family:'Comic Sans MS', cursive, sans-serif
+    /* font-size: clamp(1vw, calc(2vw + 2px), 3vw); */
+    font-family:'Comic Sans MS', cursive, sans-serif;
+    text-decoration: none;
+    color: black;
 }
 
 .view_div {

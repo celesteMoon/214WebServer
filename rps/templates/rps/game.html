@@ -20,7 +20,9 @@
             <div class="emoji_box">
                 <span id="emoji_left">❔</span>
             </div>
-            <span class="names" id="name_left">{{ request.user.username }}</span>
+            <div style="display: flex; justify-content: center; max-width: 20vw;">
+                <a class="names" id="name_left" target="_blank">{{ request.user.username }}</a>
+            </div>
         </div>
         <div class="view_gap">
             <span id="score" style="width: 15vw;"></span>
@@ -31,7 +33,9 @@
             <div class="emoji_box">
                 <span id="emoji_right">❔</span>
             </div>
-            <span class="names" id="name_right"> ? </span>
+            <div style="display: flex; justify-content: center; max-width: 20vw;">
+                <a class="names" id="name_right" target="_blank"> ? </a>
+            </div>
         </div>
     </div>
     <br>
