@@ -10,17 +10,20 @@
 {% endblock %}
 
 {% block body %}
-    <p class="username"> {{ request.user.username }} </p>
+    <p id="user_name">  </p>
+    <span id="info" style="display: none;">
     <div class="stats_box" id="stats_basic">
         <p id="join_date"></p>
     </div>
     <div class="stats_box" id="stats_rps">
+        <p style="font-weight: bold;">石头剪刀布</p>
         <p id="rps_win_lose"></p>
     </div>
 
     <div id="username_div" style="display: none;">
         {{ username|json_script:"username" }}
     </div>
+    </span>
 {% endblock %}
 
 {% block src %}

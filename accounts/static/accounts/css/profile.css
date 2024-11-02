@@ -1,10 +1,20 @@
-.username {
-    font-size: 4vw;
+#user_name {
+    margin-left: 15px;
+    /* margin-top: 10px; */
+    margin-bottom: 10px;
+    font-size: 24px;
     font-family:'Comic Sans MS', cursive, sans-serif
 }
 
+#info {
+    margin-left: 10px;
+}
+
 .stats_box {
-    margin: 1vw;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: 3px;
     /* background-color: lightsteelblue; */
     border-style: solid;
     border-width: 1px;
@@ -13,5 +23,8 @@
 }
 
 .stats_box p {
+    margin: 3px;
     color: black;
 }
+
+body {background-color:#f3ffff;}
