@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'accounts',
     'channels',
     'rps',
-    'user_profile'
+    'user_profile',
+    'user_setting',
 ]
 
 ASGI_APPLICATION = '214web.asgi.application'

@@ -6,8 +6,12 @@ ul.navibar {
     background-color: #333;
 }
 
-ul.navibar li {
+ul.navibar li.left {
     float: left;
+}
+
+ul.navibar li.right {
+    float: right;
 }
 
 li a, .dropbtn {

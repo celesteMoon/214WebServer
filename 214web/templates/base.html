@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static '214web/css/navibar.css' %}">
 
     {% block head %}
-    <title>214WebServer</title>
+    
     {% endblock %}
 
     {% block title %}
@@ -19,8 +19,8 @@
 <body>
     {% block navibar_body %}
     <ul class="navibar">
-        <li><a style="font-family:'Comic Sans MS', cursive, sans-serif">214WebServer</a></li>
-        <li><a class="navibar-block-text" href="/chat">聊天</a></li>
+        <li class="left"><a style="font-family:'Comic Sans MS', cursive, sans-serif">214WebServer</a></li>
+        <li class="left"><a class="navibar-block-text" href="/chat">聊天</a></li>
         <div class="dropdown">
             <a class="dropbtn">账号</a>
             <div class="dropdown-content">
@@ -35,7 +35,12 @@
                 <a href="/rps">石头剪刀布</a>
             </div>
         </div>
+        <li class="right"><a class="navibar-block-text" href="/setting">设置</a></li>
     </ul>
+    {% endblock %}
+
+    {% block info %}
+    <span id="background_color" style="display: none;">{{ request.user.background_color }}</span>
     {% endblock %}
 
     {% block body %}
@@ -43,7 +48,9 @@
     {% endblock %}
 
     {% block src %}
-    <p style="display: none;"> src block here..? </p>
     {% endblock %}
+
+    {% load static %}
+    <script src="{% static '214web/js/customSetting.js' %}"></script>
 </body>
 </html>

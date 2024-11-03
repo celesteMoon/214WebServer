@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>设置</title>
+{% endblock %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'user_setting/css/setting.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div id="option">
+        是的, 在这里你可以更改背景颜色
+        <div id="color_option">
+            <div class="color_option_row">
+                <div class="color_option_box">
+                    <div class="color" id="fff7f7" onclick="saveChanges('#fff7f7')"></div>
+                    <div class="color_text">#fff7f7</div>
+                </div>
+                <div class="color_option_box" >
+                    <div class="color" id="f7fff7" onclick="saveChanges('#f7fff7')"></div>
+                    <div class="color_text">#f7fff7</div>
+                </div>
+                <div class="color_option_box" >
+                    <div class="color" id="f7f7ff" onclick="saveChanges('#f7f7ff')"></div>
+                    <div class="color_text">#f7f7ff</div>
+                </div>
+            </div>
+            <div class="color_option_row">
+                <div class="color_option_box">
+                    <div class="color" id="fffff7" onclick="saveChanges('#fffff7')"></div>
+                    <div class="color_text">#fffff7</div>
+                </div>
+                <div class="color_option_box" >
+                    <div class="color" id="fff7ff" onclick="saveChanges('#fff7ff')"></div>
+                    <div class="color_text">#fff7ff</div>
+                </div>
+                <div class="color_option_box">
+                    <div class="color" id="f7ffff" onclick="saveChanges('#f7ffff')"></div>
+                    <div class="color_text">#f7ffff</div>
+                </div>
+            </div>
+            <div class="color_option_row">
+                <div class="color_option_box">
+                    <div class="color" id="f7f7f7" onclick="saveChanges('#f7f7f7')"></div>
+                    <div class="color_text">#f7f7f7</div>
+                </div>
+                <div class="color_option_box" >
+                    <div class="color" id="ffffff" onclick="saveChanges('#ffffff')"></div>
+                    <div class="color_text">#ffffff</div>
+                </div>
+                <div class="color_option_box">
+                    <div class="color" id="random" onclick="saveChanges('random')">🎲</div>
+                    <div class="color_text">random</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block src %}
+    {% load static %}
+    <script src="{% static 'user_setting/js/setting.js' %}"></script>
+{% endblock %}
