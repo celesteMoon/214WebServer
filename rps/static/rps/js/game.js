@@ -42,6 +42,9 @@ socket.onmessage = function(event)
     }
     else if (data.status === "round_end")
     {
+        if (data.self_choice == "rock") selfChoiceElement.textContent = "🪨";
+        else if (data.self_choice == "scissors") selfChoiceElement.textContent = "✂️";
+        else if (data.self_choice == "paper") selfChoiceElement.textContent = "📃";
         if (data.opponent_choice == "rock") opponentChoiceElement.textContent = "🪨";
         else if (data.opponent_choice == "scissors") opponentChoiceElement.textContent = "✂️";
         else if (data.opponent_choice == "paper") opponentChoiceElement.textContent = "📃";

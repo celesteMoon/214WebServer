@@ -113,7 +113,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
             # 通知双方结果
             await player1.send(text_data=json.dumps({
                 'status': 'round_end',
-                'your_choice': choice1,
+                'self_choice': choice1,
                 'self_score': RPSConsumer.games[game_id]['scores'][player1.username],
                 'opponent_choice': choice2,
                 'opponent_score': RPSConsumer.games[game_id]['scores'][player2.username],
@@ -121,7 +121,7 @@ class RPSConsumer(AsyncWebsocketConsumer):
             }))
             await player2.send(text_data=json.dumps({
                 'status': 'round_end',
-                'your_choice': choice2,
+                'self_choice': choice2,
                 'self_score': RPSConsumer.games[game_id]['scores'][player2.username],
                 'opponent_choice': choice1,
                 'opponent_score': RPSConsumer.games[game_id]['scores'][player1.username],
