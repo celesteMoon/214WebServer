@@ -1,4 +1,3 @@
-from channels.generic.websocket import WebsocketConsumer
 import os, sys, django, json, logging
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,6 +7,7 @@ sys.path.append(base_dir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "214web.settings")
 django.setup()
 
+from channels.generic.websocket import WebsocketConsumer
 from accounts.models import CustomUser
 
 logger = logging.getLogger('user_setting/consumers.py')

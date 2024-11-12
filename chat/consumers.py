@@ -1,10 +1,12 @@
-import asyncio
-import json
+import json, logging
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.utils import timezone
 from django.template.defaultfilters import date
+from channels.db import database_sync_to_async
 
-import threading
+from .models import Message
+
+logger = logging.getLogger('chat/consumers.py')
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
@@ -44,9 +46,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive_msg(self, text_data_json):
         message = text_data_json['message']
         username = text_data_json['username']
-        time_short = date(timezone.localtime(timezone.now()), "H:i")
-        time_local = date(timezone.localtime(timezone.now()), "Y M jS H:i:s O")
-        time_UTC = date(timezone.now(), "Y M jS H:i:s O")
+        time = timezone.now()
+        time_short = date(timezone.localtime(time), "H:i")
+        time_local = date(timezone.localtime(time), "Y M jS H:i:s O")
+        # time_UTC = date(time, "Y M jS H:i:s O")
+
+        # save the message!
+        await self.db_save_msg(username=username, message=message, time=time)
+        # logger.info("123!")
 
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -56,46 +63,52 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'username': username,
                 'time_short': time_short,
                 'time_local': time_local,
-                'time_UTC': time_UTC
+                # 'time_UTC': time_UTC
             }
         )
+
+    @database_sync_to_async
+    def db_save_msg(self, username, message, time):
+        Message.objects.create(username=username, message=message, time=time)
+        # Message.save()
+        # logger.info(Message.objects.order_by("time")[:1].__str__())
 
     # the server can only process one countdown for one user at a time
     # and it blocks any incoming message in the countdown for the user who called the countdown
-    async def receive_countdown(self, text_data_json):
-        username = text_data_json['username']
-        time_short = date(timezone.localtime(timezone.now()), "H:i")
-        time_local = date(timezone.localtime(timezone.now()), "Y M jS H:i:s O")
-        time_UTC = date(timezone.now(), "Y M jS H:i:s O")
+    # async def receive_countdown(self, text_data_json):
+    #     username = text_data_json['username']
+    #     time_short = date(timezone.localtime(timezone.now()), "H:i")
+    #     time_local = date(timezone.localtime(timezone.now()), "Y M jS H:i:s O")
+    #     time_UTC = date(timezone.now(), "Y M jS H:i:s O")
 
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': 'this is a countdown!',
-                'username': username,
-                'time_short': time_short,
-                'time_local': time_local,
-                'time_UTC': time_UTC
-            }
-        )
+    #     await self.channel_layer.group_send(
+    #         self.room_group_name,
+    #         {
+    #             'type': 'chat_message',
+    #             'message': 'this is a countdown!',
+    #             'username': username,
+    #             'time_short': time_short,
+    #             'time_local': time_local,
+    #             'time_UTC': time_UTC
+    #         }
+    #     )
 
-        await asyncio.sleep(3)
+    #     await asyncio.sleep(3)
 
-        time_short = date(timezone.localtime(timezone.now()), "H:i")
-        time_local = date(timezone.localtime(timezone.now()), "Y M jS H:i:s O")
-        time_UTC = date(timezone.now(), "Y M jS H:i:s O")
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': 'the countdown ends!',
-                'username': username,
-                'time_short': time_short,
-                'time_local': time_local,
-                'time_UTC': time_UTC
-            }
-        )
+    #     time_short = date(timezone.localtime(timezone.now()), "H:i")
+    #     time_local = date(timezone.localtime(timezone.now()), "Y M jS H:i:s O")
+    #     time_UTC = date(timezone.now(), "Y M jS H:i:s O")
+    #     await self.channel_layer.group_send(
+    #         self.room_group_name,
+    #         {
+    #             'type': 'chat_message',
+    #             'message': 'the countdown ends!',
+    #             'username': username,
+    #             'time_short': time_short,
+    #             'time_local': time_local,
+    #             'time_UTC': time_UTC
+    #         }
+    #     )
 
     # 接收来自组的消息
     async def chat_message(self, event):
@@ -103,7 +116,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = event['username']
         time_short = event['time_short']
         time_local = event['time_local']
-        time_UTC = event['time_UTC']
+        # time_UTC = event['time_UTC']
 
         # 通过 WebSocket 发送消息
         await self.send(text_data=json.dumps({
@@ -111,7 +124,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'username': username,
             'time_short': time_short,
             'time_local': time_local,
-            'time_UTC': time_UTC
+            # 'time_UTC': time_UTC
         }))
 
     # user list functions
@@ -138,11 +151,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = event['username']
         time_short = event['time_short']
         time_local = event['time_local']
-        time_UTC = event['time_UTC']
+        # time_UTC = event['time_UTC']
         await self.send(text_data=json.dumps({
             'message': message,
             'username': username,
             'time_short': time_short,
             'time_local': time_local,
-            'time_UTC': time_UTC
+            # 'time_UTC': time_UTC
         }))

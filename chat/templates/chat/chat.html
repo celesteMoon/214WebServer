@@ -14,14 +14,25 @@
 
     <body onresize="resizeChatHistory()" onload="resizeChatHistory()">
         <h1>聊天室</h1>
-        <p>目前没有消息存档功能, 只能在线接收, 刷新页面消息会清空</p>
+        <p>现在可以保存最近的 100 条消息了! (其实可以更多, 但是这样历史记录就太长了)</p>
         <div>
             <div id="online-users" style="margin: 0; padding: 0; overflow: hidden;"></div>
         </div>
 
         <div id="chat-log" style="height: 600px; overflow-y: auto;">
             {% for message in messages %}
-                <p><strong>{{ message.username }}</strong>: {{ message.content }}</p>
+                <p class="message" style="display: flex; flex-direction: row;">
+                    <span class="time-container">
+                        <small class="local-time"> {{ message.time|date:"H:i" }} </small>
+                        <span class="tooltip">
+                            {{ message.time|date:"Y M jS H:i:s O" }}
+                        </span>
+                    </span>
+                    &nbsp;
+                    <script type="text/template" style="display: block;">
+                        {{ message.username }}: {{ message.message }}
+                    </script>
+                </p>
             {% endfor %}
         </div>
     </body>

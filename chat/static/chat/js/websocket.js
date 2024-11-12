@@ -3,6 +3,7 @@ const chatSocket = new WebSocket(
 );
 
 var toBottomFlag = false;
+updTimeTooltip(); // upd chat history
 
 chatSocket.onmessage = function(e) {
     
@@ -24,13 +25,12 @@ chatSocket.onmessage = function(e) {
         <span class="time-container">
             <small class="local-time"> ${data.time_short} </small>
             <span class="tooltip">
-                ${data.time_local} <br>
-                ${data.time_UTC}
+                ${data.time_local}
             </span>
         </span>
         &nbsp;
         <script type="text/template" style="display: block;">
-            ${data.username} : ${data.message}
+            ${data.username}: ${data.message}
         </script>
     </p>
     `
